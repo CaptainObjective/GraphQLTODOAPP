@@ -14,7 +14,7 @@ const TaskSummary = props => {
     <div className={classes.root}>
       <div className={classes.main}>
         <div className={classes.task}>
-          <Typography variant="h6">
+          <Typography component={"span"} variant="h6">
             <InputBase
               className={classes.title}
               value={title}
@@ -25,10 +25,11 @@ const TaskSummary = props => {
               }}
             />
           </Typography>
-          <Typography variant="subtitle1">
+          <Typography component={"span"} variant="subtitle1">
             <InputBase
               value={description}
               fullWidth
+              multiline
               onClick={e => e.stopPropagation()}
               onChange={e => setDescription(e.target.value)}
               inputProps={{

@@ -18,7 +18,7 @@ const TaskDetails = props => {
 
   return (
     <div className={classes.root}>
-      <Typography>
+      <Typography component={"span"}>
         <InputBase
           className={classes.title}
           value={fulltext}
