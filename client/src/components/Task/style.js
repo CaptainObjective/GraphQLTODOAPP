@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "80%",
-    padding: 0
+    padding: 0,
+    margin: "1rem"
   },
   panelSummary: {
     backgroundColor: "inherit",

@@ -1,0 +1,43 @@
+# import * from './generated/prisma.graphql'
+
+type Subscription {
+  taskCreated: Task
+  taskDeleted: Task
+}
+
+type Mutation {
+  signUp(data: UserCreateInput!): User!
+  signIn(email: String!, password: String!): User
+  signOut: Message!
+
+  createTask(data: TaskCreateInput!): Task!
+  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
+  deleteTask(where: TaskWhereUniqueInput!): Task
+}
+
+type Query {
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [User]!
+  me: User
+
+  task(where: TaskWhereUniqueInput!): Task
+  tasks(
+    where: TaskWhereInput
+    orderBy: TaskOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Task]!
+}
+type Message {
+  message: String!
+}

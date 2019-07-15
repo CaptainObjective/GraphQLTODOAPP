@@ -19,7 +19,15 @@ const TaskSummary = props => {
               className={classes.title}
               value={title}
               onClick={e => e.stopPropagation()}
-              onChange={e => setTitle(e.target.value)}
+              onChange={e => {
+                setTitle(e.target.value);
+                props.updateTask({
+                  variables: {
+                    data: { title: e.target.value },
+                    where: { id: props.id }
+                  }
+                });
+              }}
               inputProps={{
                 maxLength: 20
               }}
@@ -27,11 +35,20 @@ const TaskSummary = props => {
           </Typography>
           <Typography component={"span"} variant="subtitle1">
             <InputBase
-              value={description}
+              value={description || ""}
+              placeholder={"Opis..."}
               fullWidth
               multiline
               onClick={e => e.stopPropagation()}
-              onChange={e => setDescription(e.target.value)}
+              onChange={e => {
+                props.updateTask({
+                  variables: {
+                    data: { description: e.target.value },
+                    where: { id: props.id }
+                  }
+                });
+                setDescription(e.target.value);
+              }}
               inputProps={{
                 maxLength: 60
               }}
@@ -44,6 +61,12 @@ const TaskSummary = props => {
           onClick={e => {
             e.stopPropagation();
             props.markDone();
+            props.updateTask({
+              variables: {
+                data: { completed: !props.isDone },
+                where: { id: props.id }
+              }
+            });
           }}
         >
           {props.isDone ? (
@@ -53,11 +76,11 @@ const TaskSummary = props => {
           )}
         </div>
       </div>
-      {props.fulltext && (
+      {
         <div className={classes.expandicon}>
           <Icon style={{ fontSize: "inherit" }}>keyboard_arrow_down</Icon>
         </div>
-      )}
+      }
     </div>
   );
 };

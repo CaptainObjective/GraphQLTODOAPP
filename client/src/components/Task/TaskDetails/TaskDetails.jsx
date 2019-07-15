@@ -21,9 +21,18 @@ const TaskDetails = props => {
       <Typography component={"span"}>
         <InputBase
           className={classes.title}
-          value={fulltext}
+          value={fulltext || ""}
           onClick={e => e.stopPropagation()}
-          onChange={e => setFulltext(e.target.value)}
+          onChange={e => {
+            props.updateTask({
+              variables: {
+                data: { fulltext: e.target.value },
+                where: { id: props.id }
+              }
+            });
+            setFulltext(e.target.value);
+          }}
+          placeholder={"Pełny opis zadania..."}
           fullWidth
           multiline
         />
@@ -41,13 +50,26 @@ const TaskDetails = props => {
               selected={props.priority === priority}
               isDone={props.isDone}
               onClick={e => {
+                props.updateTask({
+                  variables: {
+                    data: { priority: priority.toUpperCase() },
+                    where: { id: props.id }
+                  }
+                });
                 props.setPriority(priority);
               }}
             />
           ))}
         </div>
         <div className={classes.delete}>
-          <Icon icon="delete" caption="Usuń" size="1.6rem" />
+          <Icon
+            onClick={() =>
+              props.deleteTask({ variables: { where: { id: props.id } } })
+            }
+            icon="delete"
+            caption="Usuń"
+            size="1.6rem"
+          />
         </div>
       </div>
     </div>

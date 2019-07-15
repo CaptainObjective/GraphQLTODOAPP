@@ -1,0 +1,21 @@
+type User {
+  id: ID! @id
+  email: String! @unique
+  password: String!
+  fullName: String!
+}
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+type Task {
+  id: ID! @id
+  title: String
+  description: String
+  fulltext: String
+  completed: Boolean @default(value: false)
+  priority: Priority @default(value: MEDIUM)
+}
+
+
