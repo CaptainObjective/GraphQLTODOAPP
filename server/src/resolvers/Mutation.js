@@ -4,8 +4,12 @@ const jwt = require("jsonwebtoken");
 const Mutation = {
   signUp: async (parent, args, ctx, info) => {
     args.data.password = await bcrypt.hash(args.data.password, 10);
-    const user = await ctx.prisma.mutation.createUser(args, info);
-    return user;
+    try {
+      const user = await ctx.prisma.mutation.createUser(args, info);
+      return user;
+    } catch (ex) {
+      throw new Error("EMAIL_TAKEN");
+    }
   },
   signIn: async (parent, args, ctx, info) => {
     const user = await ctx.prisma.query.user(

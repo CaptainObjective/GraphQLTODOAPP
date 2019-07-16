@@ -36,21 +36,25 @@ const Login = () => {
 
     if (alertMsg !== "") alert(alertMsg);
     else {
-      await signUp({
-        variables: {
-          data: {
-            email: email,
-            password: pass,
-            fullName: name
-          },
-          refetchQueries: [{ query: me }]
-        }
-      });
-      login(signIn);
+      try {
+        await signUp({
+          variables: {
+            data: {
+              email: email,
+              password: pass,
+              fullName: name
+            },
+            refetchQueries: [{ query: me }]
+          }
+        });
+        login(signIn);
+      } catch (ex) {
+        alert(handelException(ex.message));
+      }
     }
   };
 
-  const login = signIn => {
+  const login = async signIn => {
     let alertMsg = "";
     if (!email.includes("@") || !email.includes("."))
       alertMsg += "Podaj poprawny email\n";
@@ -58,24 +62,35 @@ const Login = () => {
 
     if (alertMsg !== "") alert(alertMsg);
     else {
-      signIn({
-        variables: {
-          email: email,
-          password: pass
-        },
-        refetchQueries: [{ query: me }]
-      });
+      try {
+        await signIn({
+          variables: {
+            email: email,
+            password: pass
+          },
+          refetchQueries: [{ query: me }]
+        });
+      } catch (ex) {
+        alert(handelException(ex.message));
+      }
     }
+  };
+
+  const handelException = ex => {
+    if (ex.includes("WRONG_EMAIL"))
+      return "Nie ma użytkownika o tym adresie email.\n Jeśli nie masz konta zarejestruj się.";
+    if (ex.includes("WRONG_PASSWORD"))
+      return "Podano nie poprawną pare email/haslo.";
+    if (ex.includes("EMAIL_TAKEN"))
+      return "Konto o tym adresie email już istnieje";
+    return "Error w chuj";
   };
   return (
     <Mutation mutation={signUp}>
       {(signUp, { loading: loading1, error: error1 }) => (
         <Mutation mutation={signIn}>
           {(signIn, { loading: loading2, error: error2 }) => {
-            console.log(error2);
             if (loading1 || loading2) return <p>Wczytywanie...</p>;
-            if (error1) alert(error1);
-            if (error2) alert(error2);
             return (
               <Container className={classes.root} maxWidth="sm">
                 <Paper className={classes.paper}>
