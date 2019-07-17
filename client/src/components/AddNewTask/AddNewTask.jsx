@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 
-//mutacja musi odpytywac to co chce dostac
+import Store from "../App/Store";
+
+//mutacja musi odpytywac to co chce dostac subskrypcji
 
 const add_task = gql`
-  mutation {
-    createTask(data: { title: "Tytuł" }) {
+  mutation($data: TaskCreateInput!) {
+    createTask(data: $data) {
       id
       title
       description
@@ -28,12 +30,22 @@ const styles = makeStyles(theme => ({
 }));
 
 const AddNewTask = () => {
+  const { selectedCategory } = useContext(Store);
   const classes = styles();
   return (
     <Mutation mutation={add_task}>
       {(addTask, { data }) => (
         <Icon
-          onClick={() => addTask()}
+          onClick={() =>
+            addTask({
+              variables: {
+                data: {
+                  title: "Tytuł",
+                  category: { connect: { id: selectedCategory } }
+                }
+              }
+            })
+          }
           color="primary"
           className={classes.root}
         >

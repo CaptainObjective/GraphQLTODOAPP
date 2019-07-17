@@ -6,8 +6,20 @@ const Mutation = {
     args.data.password = await bcrypt.hash(args.data.password, 10);
     try {
       const user = await ctx.prisma.mutation.createUser(args, info);
+      await ctx.prisma.mutation.createCategory({
+        data: {
+          name: "Domyślna kategoria",
+          user: {
+            connect: {
+              id: user.id
+            }
+          },
+          tasks: []
+        }
+      });
       return user;
     } catch (ex) {
+      console.log(ex);
       throw new Error("EMAIL_TAKEN");
     }
   },
@@ -34,6 +46,14 @@ const Mutation = {
   signOut: async (parent, args, ctx) => {
     ctx.response.clearCookie("token");
     return { message: "Logout" };
+  },
+
+  createCategory: async (parent, args, ctx, info) => {
+    console.log(args, ctx.request.userId);
+    args.data = { ...args.data, user: { connect: { id: ctx.request.userId } } };
+    console.log(args);
+    const category = await ctx.prisma.mutation.createCategory(args, info);
+    return category;
   },
 
   createTask: async (parent, args, ctx, info) => {

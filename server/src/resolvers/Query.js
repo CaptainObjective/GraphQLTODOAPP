@@ -14,6 +14,12 @@ const Query = {
     return user;
   },
 
+  categories: async (parent, args, ctx, info) => {
+    args.where = { ...args.where, user: { id: ctx.request.userId } };
+    const categories = await ctx.prisma.query.categories(args, info);
+    return categories;
+  },
+
   task: async (parent, args, ctx, info) => {
     const task = await ctx.prisma.query.task(args, info);
     return task;

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "@material-ui/core/Container";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 
+import Store from "../App/Store";
 import Task from "../Task";
 import AddNewTask from "../AddNewTask";
 
 const query = gql`
-  {
-    tasks {
+  query($where: TaskWhereInput) {
+    tasks(where: $where) {
       id
       title
       description
@@ -41,6 +42,7 @@ const deleteSubscription = gql`
 `;
 
 const Home = () => {
+  const { selectedCategory } = useContext(Store);
   return (
     <Container
       style={{
@@ -52,7 +54,10 @@ const Home = () => {
       }}
       maxWidth="md"
     >
-      <Query query={query}>
+      <Query
+        query={query}
+        variables={{ where: { category: { id: selectedCategory } } }}
+      >
         {({ data, loading, error, subscribeToMore }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error :(</p>;

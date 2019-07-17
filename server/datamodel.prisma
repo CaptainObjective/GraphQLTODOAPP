@@ -3,6 +3,13 @@ type User {
   email: String! @unique
   password: String!
   fullName: String!
+  categories: [Category!]!
+}
+type Category {
+  id: ID! @id
+  name: String!
+  user: User!
+  tasks: [Task!]!
 }
 enum Priority {
   LOW
@@ -16,6 +23,7 @@ type Task {
   fulltext: String
   completed: Boolean @default(value: false)
   priority: Priority @default(value: MEDIUM)
+  category: Category!
 }
 
 

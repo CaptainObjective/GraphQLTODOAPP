@@ -1,5 +1,9 @@
 # source: https://eu1.prisma.sh/mygraphql/todoapp/dev
-# timestamp: Sat Jul 13 2019 13:17:18 GMT+0200 (GMT+02:00)
+# timestamp: Tue Jul 16 2019 16:12:14 GMT+0200 (GMT+02:00)
+
+type AggregateCategory {
+  count: Int!
+}
 
 type AggregateTask {
   count: Int!
@@ -14,6 +18,364 @@ type BatchPayload {
   count: Long!
 }
 
+type Category implements Node {
+  id: ID!
+  name: String!
+  user: User!
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
+}
+
+"""A connection to a list of items."""
+type CategoryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CategoryEdge]!
+  aggregate: AggregateCategory!
+}
+
+input CategoryCreateInput {
+  id: ID
+  name: String!
+  user: UserCreateOneWithoutCategoriesInput!
+  tasks: TaskCreateManyWithoutCategoryInput
+}
+
+input CategoryCreateManyWithoutUserInput {
+  create: [CategoryCreateWithoutUserInput!]
+  connect: [CategoryWhereUniqueInput!]
+}
+
+input CategoryCreateOneWithoutTasksInput {
+  create: CategoryCreateWithoutTasksInput
+  connect: CategoryWhereUniqueInput
+}
+
+input CategoryCreateWithoutTasksInput {
+  id: ID
+  name: String!
+  user: UserCreateOneWithoutCategoriesInput!
+}
+
+input CategoryCreateWithoutUserInput {
+  id: ID
+  name: String!
+  tasks: TaskCreateManyWithoutCategoryInput
+}
+
+"""An edge in a connection."""
+type CategoryEdge {
+  """The item at the end of the edge."""
+  node: Category!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type CategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input CategoryScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategoryScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategoryScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategoryScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+type CategorySubscriptionPayload {
+  mutation: MutationType!
+  node: Category
+  updatedFields: [String!]
+  previousValues: CategoryPreviousValues
+}
+
+input CategorySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategorySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategorySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategorySubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CategoryWhereInput
+}
+
+input CategoryUpdateInput {
+  name: String
+  user: UserUpdateOneRequiredWithoutCategoriesInput
+  tasks: TaskUpdateManyWithoutCategoryInput
+}
+
+input CategoryUpdateManyDataInput {
+  name: String
+}
+
+input CategoryUpdateManyMutationInput {
+  name: String
+}
+
+input CategoryUpdateManyWithoutUserInput {
+  create: [CategoryCreateWithoutUserInput!]
+  connect: [CategoryWhereUniqueInput!]
+  set: [CategoryWhereUniqueInput!]
+  disconnect: [CategoryWhereUniqueInput!]
+  delete: [CategoryWhereUniqueInput!]
+  update: [CategoryUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [CategoryUpdateManyWithWhereNestedInput!]
+  deleteMany: [CategoryScalarWhereInput!]
+  upsert: [CategoryUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input CategoryUpdateManyWithWhereNestedInput {
+  where: CategoryScalarWhereInput!
+  data: CategoryUpdateManyDataInput!
+}
+
+input CategoryUpdateOneRequiredWithoutTasksInput {
+  create: CategoryCreateWithoutTasksInput
+  connect: CategoryWhereUniqueInput
+  update: CategoryUpdateWithoutTasksDataInput
+  upsert: CategoryUpsertWithoutTasksInput
+}
+
+input CategoryUpdateWithoutTasksDataInput {
+  name: String
+  user: UserUpdateOneRequiredWithoutCategoriesInput
+}
+
+input CategoryUpdateWithoutUserDataInput {
+  name: String
+  tasks: TaskUpdateManyWithoutCategoryInput
+}
+
+input CategoryUpdateWithWhereUniqueWithoutUserInput {
+  where: CategoryWhereUniqueInput!
+  data: CategoryUpdateWithoutUserDataInput!
+}
+
+input CategoryUpsertWithoutTasksInput {
+  update: CategoryUpdateWithoutTasksDataInput!
+  create: CategoryCreateWithoutTasksInput!
+}
+
+input CategoryUpsertWithWhereUniqueWithoutUserInput {
+  where: CategoryWhereUniqueInput!
+  update: CategoryUpdateWithoutUserDataInput!
+  create: CategoryCreateWithoutUserInput!
+}
+
+input CategoryWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategoryWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategoryWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategoryWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  user: UserWhereInput
+  tasks_every: TaskWhereInput
+  tasks_some: TaskWhereInput
+  tasks_none: TaskWhereInput
+}
+
+input CategoryWhereUniqueInput {
+  id: ID
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -22,16 +384,22 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createCategory(data: CategoryCreateInput!): Category!
   createTask(data: TaskCreateInput!): Task!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteTask(where: TaskWhereUniqueInput!): Task
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
 }
 
@@ -70,10 +438,13 @@ enum Priority {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
   user(where: UserWhereUniqueInput!): User
+  category(where: CategoryWhereUniqueInput!): Category
   task(where: TaskWhereUniqueInput!): Task
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
 
   """Fetches an object given its ID"""
@@ -85,6 +456,7 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
 }
 
@@ -95,6 +467,7 @@ type Task implements Node {
   fulltext: String
   completed: Boolean
   priority: Priority
+  category: Category!
 }
 
 """A connection to a list of items."""
@@ -108,6 +481,21 @@ type TaskConnection {
 }
 
 input TaskCreateInput {
+  id: ID
+  title: String
+  description: String
+  fulltext: String
+  completed: Boolean
+  priority: Priority
+  category: CategoryCreateOneWithoutTasksInput!
+}
+
+input TaskCreateManyWithoutCategoryInput {
+  create: [TaskCreateWithoutCategoryInput!]
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateWithoutCategoryInput {
   id: ID
   title: String
   description: String
@@ -147,6 +535,191 @@ type TaskPreviousValues {
   fulltext: String
   completed: Boolean
   priority: Priority
+}
+
+input TaskScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TaskScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TaskScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TaskScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  fulltext: String
+
+  """All values that are not equal to given value."""
+  fulltext_not: String
+
+  """All values that are contained in given list."""
+  fulltext_in: [String!]
+
+  """All values that are not contained in given list."""
+  fulltext_not_in: [String!]
+
+  """All values less than the given value."""
+  fulltext_lt: String
+
+  """All values less than or equal the given value."""
+  fulltext_lte: String
+
+  """All values greater than the given value."""
+  fulltext_gt: String
+
+  """All values greater than or equal the given value."""
+  fulltext_gte: String
+
+  """All values containing the given string."""
+  fulltext_contains: String
+
+  """All values not containing the given string."""
+  fulltext_not_contains: String
+
+  """All values starting with the given string."""
+  fulltext_starts_with: String
+
+  """All values not starting with the given string."""
+  fulltext_not_starts_with: String
+
+  """All values ending with the given string."""
+  fulltext_ends_with: String
+
+  """All values not ending with the given string."""
+  fulltext_not_ends_with: String
+  completed: Boolean
+
+  """All values that are not equal to given value."""
+  completed_not: Boolean
+  priority: Priority
+
+  """All values that are not equal to given value."""
+  priority_not: Priority
+
+  """All values that are contained in given list."""
+  priority_in: [Priority!]
+
+  """All values that are not contained in given list."""
+  priority_not_in: [Priority!]
 }
 
 type TaskSubscriptionPayload {
@@ -192,6 +765,15 @@ input TaskUpdateInput {
   fulltext: String
   completed: Boolean
   priority: Priority
+  category: CategoryUpdateOneRequiredWithoutTasksInput
+}
+
+input TaskUpdateManyDataInput {
+  title: String
+  description: String
+  fulltext: String
+  completed: Boolean
+  priority: Priority
 }
 
 input TaskUpdateManyMutationInput {
@@ -200,6 +782,42 @@ input TaskUpdateManyMutationInput {
   fulltext: String
   completed: Boolean
   priority: Priority
+}
+
+input TaskUpdateManyWithoutCategoryInput {
+  create: [TaskCreateWithoutCategoryInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutCategoryInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutCategoryInput!]
+}
+
+input TaskUpdateManyWithWhereNestedInput {
+  where: TaskScalarWhereInput!
+  data: TaskUpdateManyDataInput!
+}
+
+input TaskUpdateWithoutCategoryDataInput {
+  title: String
+  description: String
+  fulltext: String
+  completed: Boolean
+  priority: Priority
+}
+
+input TaskUpdateWithWhereUniqueWithoutCategoryInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateWithoutCategoryDataInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutCategoryInput {
+  where: TaskWhereUniqueInput!
+  update: TaskUpdateWithoutCategoryDataInput!
+  create: TaskCreateWithoutCategoryInput!
 }
 
 input TaskWhereInput {
@@ -385,6 +1003,7 @@ input TaskWhereInput {
 
   """All values that are not contained in given list."""
   priority_not_in: [Priority!]
+  category: CategoryWhereInput
 }
 
 input TaskWhereUniqueInput {
@@ -396,6 +1015,7 @@ type User implements Node {
   email: String!
   password: String!
   fullName: String!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
 }
 
 """A connection to a list of items."""
@@ -409,6 +1029,19 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
+  email: String!
+  password: String!
+  fullName: String!
+  categories: CategoryCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutCategoriesInput {
+  create: UserCreateWithoutCategoriesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCategoriesInput {
   id: ID
   email: String!
   password: String!
@@ -483,12 +1116,31 @@ input UserUpdateInput {
   email: String
   password: String
   fullName: String
+  categories: CategoryUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   email: String
   password: String
   fullName: String
+}
+
+input UserUpdateOneRequiredWithoutCategoriesInput {
+  create: UserCreateWithoutCategoriesInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutCategoriesDataInput
+  upsert: UserUpsertWithoutCategoriesInput
+}
+
+input UserUpdateWithoutCategoriesDataInput {
+  email: String
+  password: String
+  fullName: String
+}
+
+input UserUpsertWithoutCategoriesInput {
+  update: UserUpdateWithoutCategoriesDataInput!
+  create: UserCreateWithoutCategoriesInput!
 }
 
 input UserWhereInput {
@@ -660,6 +1312,9 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   fullName_not_ends_with: String
+  categories_every: CategoryWhereInput
+  categories_some: CategoryWhereInput
+  categories_none: CategoryWhereInput
 }
 
 input UserWhereUniqueInput {

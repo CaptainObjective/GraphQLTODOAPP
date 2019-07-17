@@ -10,6 +10,8 @@ type Mutation {
   signIn(email: String!, password: String!): User
   signOut: Message!
 
+  createCategory(data: CategoryCreateInput!): Category!
+
   createTask(data: TaskCreateInput!): Task!
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
   deleteTask(where: TaskWhereUniqueInput!): Task
@@ -26,6 +28,16 @@ type Query {
     last: Int
   ): [User]!
   me: User
+
+  categories(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Category]!
 
   task(where: TaskWhereUniqueInput!): Task
   tasks(

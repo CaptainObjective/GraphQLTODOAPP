@@ -6,6 +6,7 @@ import { ApolloProvider } from "react-apollo";
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
 
+import { StoreProvider } from "./Store";
 import Home from "../Home";
 import Login from "../Login";
 import AppBar from "../AppBar";
@@ -24,25 +25,27 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ApolloProvider client={client}>
-        <Query query={query}>
-          {({ data, loading, error }) => {
-            if (loading) return <p>Loading...</p>;
-            if (!data.me && window.location.pathname !== "/login")
-              return <Redirect to="/login" />;
-            if (data.me && window.location.pathname !== "/")
-              return <Redirect to="/" />;
-            return (
-              <Switch>
-                <Route path="/login" component={Login} />
-                <AppBar>
-                  <Route path="/" component={Home} />
-                </AppBar>
-              </Switch>
-            );
-          }}
-        </Query>
-      </ApolloProvider>
+      <StoreProvider>
+        <ApolloProvider client={client}>
+          <Query query={query}>
+            {({ data, loading, error }) => {
+              if (loading) return <p>Loading...</p>;
+              if (!data.me && window.location.pathname !== "/login")
+                return <Redirect to="/login" />;
+              if (data.me && window.location.pathname !== "/")
+                return <Redirect to="/" />;
+              return (
+                <Switch>
+                  <Route path="/login" component={Login} />
+                  <AppBar>
+                    <Route path="/" component={Home} />
+                  </AppBar>
+                </Switch>
+              );
+            }}
+          </Query>
+        </ApolloProvider>
+      </StoreProvider>
     </ThemeProvider>
   );
 };
