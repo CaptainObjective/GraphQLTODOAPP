@@ -4,6 +4,7 @@ import Tab from "@material-ui/core/Tab";
 
 import Store from "../App/Store";
 import useStyles from "./styles";
+import Category from "../Category";
 
 const Categories = ({ data }) => {
   const { selectedCategory, selectCategory } = useContext(Store);
@@ -15,6 +16,9 @@ const Categories = ({ data }) => {
   return (
     <Tabs
       value={selectedCategory || data.categories[0].id}
+      indicatorColor="secondary"
+      variant="scrollable"
+      scrollButtons="auto"
       onChange={(e, newValue) => {
         if (selectedCategory === newValue) return;
         selectCategory(newValue);
@@ -22,7 +26,9 @@ const Categories = ({ data }) => {
       className={styles.root}
     >
       {data.categories.map(({ name, id }) => {
-        return <Tab key={id} label={name} value={id} />;
+        return (
+          <Tab key={id} label={<Category name={name} id={id} />} value={id} />
+        );
       })}
     </Tabs>
   );

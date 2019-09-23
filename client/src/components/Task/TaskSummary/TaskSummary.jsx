@@ -77,7 +77,7 @@ const TaskSummary = props => {
         </div>
       </div>
       {
-        <div className={classes.expandicon}>
+        <div className={classes.expandicon} onClick={props.expand}>
           <Icon style={{ fontSize: "inherit" }}>keyboard_arrow_down</Icon>
         </div>
       }

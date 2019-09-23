@@ -31,10 +31,11 @@ const deleteTask = gql`
 `;
 
 const Task = props => {
-  const classes = useStyles();
-
   const [isDone, setDone] = useState(props.completed);
   const [priority, setPriority] = useState(props.priority);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const classes = useStyles(isExpanded);
 
   const markDone = () => {
     setDone(!isDone);
@@ -42,7 +43,6 @@ const Task = props => {
   const changePriority = value => {
     setPriority(value);
   };
-
   const color = mapColor(priority, isDone);
   return (
     <Mutation mutation={updateTask}>
@@ -50,6 +50,7 @@ const Task = props => {
         <Mutation mutation={deleteTask}>
           {deleteTask => (
             <ExpansionPanel
+              expanded={isExpanded}
               className={classes.root}
               style={{
                 boxShadow: `0px 0px 15px 1px ${color}`
@@ -67,6 +68,7 @@ const Task = props => {
                   isDone={isDone}
                   markDone={markDone}
                   updateTask={updateTask}
+                  expand={() => setIsExpanded(!isExpanded)}
                 />
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>

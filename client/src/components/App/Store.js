@@ -8,7 +8,6 @@ export class StoreProvider extends React.Component {
   };
 
   selectCategory = value => {
-    console.log(value);
     this.setState({
       selectedCategory: value
     });

@@ -6,6 +6,7 @@ import { gql } from "apollo-boost";
 import Store from "../App/Store";
 import Task from "../Task";
 import AddNewTask from "../AddNewTask";
+import useStyles from "./styles";
 
 const query = gql`
   query($where: TaskWhereInput) {
@@ -43,17 +44,9 @@ const deleteSubscription = gql`
 
 const Home = () => {
   const { selectedCategory } = useContext(Store);
+  const classes = useStyles();
   return (
-    <Container
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "2rem"
-      }}
-      maxWidth="md"
-    >
+    <Container className={classes.root} maxWidth="xl">
       <Query
         query={query}
         variables={{ where: { category: { id: selectedCategory } } }}

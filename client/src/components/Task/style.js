@@ -2,8 +2,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "80%",
+    minWidth: "400px",
     padding: 0,
+    gridRow: isExpanded => (isExpanded ? "span 2" : "span 1"),
     margin: "1rem"
   },
   panelSummary: {

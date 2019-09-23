@@ -11,6 +11,11 @@ type Mutation {
   signOut: Message!
 
   createCategory(data: CategoryCreateInput!): Category!
+  updateCategory(
+    data: CategoryUpdateInput!
+    where: CategoryWhereUniqueInput!
+  ): Category
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
 
   createTask(data: TaskCreateInput!): Task!
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task

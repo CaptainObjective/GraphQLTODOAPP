@@ -49,10 +49,17 @@ const Mutation = {
   },
 
   createCategory: async (parent, args, ctx, info) => {
-    console.log(args, ctx.request.userId);
     args.data = { ...args.data, user: { connect: { id: ctx.request.userId } } };
-    console.log(args);
     const category = await ctx.prisma.mutation.createCategory(args, info);
+    return category;
+  },
+  updateCategory: async (parent, args, ctx, info) => {
+    // args.data = { ...args.data, user: { connect: { id: ctx.request.userId } } };
+    const category = await ctx.prisma.mutation.updateCategory(args, info);
+    return category;
+  },
+  deleteCategory: async (parent, args, ctx, info) => {
+    const category = await ctx.prisma.mutation.deleteCategory(args, info);
     return category;
   },
 
