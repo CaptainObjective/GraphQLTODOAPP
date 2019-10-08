@@ -1,17 +1,18 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/styles";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { ApolloProvider } from "react-apollo";
-import { Query } from "react-apollo";
-import { gql } from "apollo-boost";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/styles';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { ApolloProvider } from 'react-apollo';
+import { Query } from 'react-apollo';
+import { gql } from 'apollo-boost';
 
-import { StoreProvider } from "./Store";
-import Home from "../Home";
-import Login from "../Login";
-import AppBar from "../AppBar";
-import theme from "./theme";
-import client from "./client";
+import { StoreProvider } from './Store';
+import Home from '../Home';
+import Login from '../Login';
+import AppBar from '../AppBar';
+import theme from './theme';
+import client from './client';
+import test from '../Testowy';
 
 export const query = gql`
   {
@@ -30,13 +31,12 @@ const App = () => {
           <Query query={query}>
             {({ data, loading, error }) => {
               if (loading) return <p>Loading...</p>;
-              if (!data.me && window.location.pathname !== "/login")
-                return <Redirect to="/login" />;
-              if (data.me && window.location.pathname !== "/")
-                return <Redirect to="/" />;
+              if (!data.me && window.location.pathname !== '/login') return <Redirect to="/login" />;
+              if (data.me && window.location.pathname !== '/') return <Redirect to="/" />;
               return (
                 <Switch>
                   <Route path="/login" component={Login} />
+                  <Route path="/test" component={Test} />
                   <AppBar>
                     <Route path="/" component={Home} />
                   </AppBar>
